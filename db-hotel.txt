@@ -67,13 +67,12 @@ FROM `stanze`
 
 
 
-
-
+GROUP
 
 
 ●Conta gli ospiti raggruppandoli per anno di nascita
 
-SELECT COUNT(id) ,date_of_birth
+SELECT COUNT(id) ,YEAR(date_of_birth)
 FROM `ospiti` 
 GROUP BY YEAR(date_of_birth)
 
@@ -103,14 +102,47 @@ ok
 SELECT COUNT(ospite_id), ospite_id  
 FROM prenotazioni_has_ospiti 
 GROUP BY ospite_id;
-ORDER BY numero_max_prenotazioni DESC
+ORDER BY ospite_id DESC
 ok
 
 
+JOIN
 
 ●Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+SELECT COUNT(*), `ospiti`.`name` AS `nome_ospite`, `ospiti`.`lastname` AS `cognome_ospite`
+FROM ospiti
+JOIN prenotazioni_has_ospiti
+ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+GROUP BY ospiti.name, ospiti.lastname
+HAVING COUNT(*) > 2
+ORDER BY COUNT(*) DESC ;
+
+
 ●Stampare tutti gli ospiti per ogni prenotazione
-●Stampare Nome, Cognome, Prezzo e Pagante per tutteleprenotazioni fatte a Maggio 2018
-●Fai la somma di tutti i prezzi delle prenotazioni per le stanze delprimo piano
-●Prendi i dati di fatturazione per la prenotazionecon id=7
-●Lestanzesonostatetutteprenotatealmenounavolta?(Visualizzarelestanzenonancoraprenotate
+
+SELECT name AS nome, lastname AS cognome, prenotazioni_has_ospiti.prenotazione_id AS numero_pr
+FROM ospiti
+JOIN prenotazioni_has_ospiti
+ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+
+●Stampare Nome, Cognome, Prezzo e Pagante per tutte le prenotazioni fatte a Maggio 2018
+
+SELECT name AS nome, lastname AS cognome, prenotazioni_has_ospiti.prenotazione_id AS numero_pr, prenotazioni_has_ospiti.created_at 
+FROM ospiti
+JOIN prenotazioni_has_ospiti
+ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+WHERE MONTH(prenotazioni_has_ospiti.created_at) = 5 
+
+●Fai la somma di tutti i prezzi delle prenotazioni per le stanze del primo piano
+
+SELECT SUM(price)
+FROM pagamenti
+JOIN stanze
+ON pagamenti.id = stanze.id
+WHERE pagamenti.status = 'accepted'
+AND floor = 1 
+
+●Prendi i dati di fatturazione per la prenotazione con id=7
+
+●Le stanze sono state tutte prenotate almeno unavolta? 
+(Visualizzare le stanze non ancora prenotate)
