@@ -96,13 +96,12 @@ FROM 'prenotazioni'
 GROUP BY hour(created_at)
 ORDER BY prenotazioni DESC
 LIMIT 1 
-ok
+no
 ●Quante prenotazioni ha fatto l’ospite che ha fatto più prenotazioni?
 
 SELECT COUNT(ospite_id), ospite_id  
 FROM prenotazioni_has_ospiti 
 GROUP BY ospite_id;
-
-no
+ok
 
 
