@@ -67,7 +67,7 @@ FROM `stanze`
 
 
 
-GROUP
+>>>>>>>>>>GROUP<<<<<<<<<
 
 
 ●Conta gli ospiti raggruppandoli per anno di nascita
@@ -106,7 +106,7 @@ ORDER BY ospite_id DESC
 ok
 
 
-JOIN
+>>>>>>>>>JOIN<<<<<<<<<
 
 ●Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
 SELECT COUNT(*), `ospiti`.`name` AS `nome_ospite`, `ospiti`.`lastname` AS `cognome_ospite`
@@ -154,3 +154,8 @@ WHERE prenotazione_id = 7
 (Visualizzare le stanze non ancora prenotate)
 
 
+SELECT stanze.room_number as numero_camera, prenotazioni.stanza_id as stato_prenotazione
+FROM `prenotazioni` 
+RIGHT JOIN stanze 
+ON prenotazioni.stanza_id = stanze.id
+WHERE prenotazioni.stanza_id IS NULL 
