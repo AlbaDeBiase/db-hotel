@@ -144,5 +144,13 @@ AND floor = 1
 
 ●Prendi i dati di fatturazione per la prenotazione con id=7
 
-●Le stanze sono state tutte prenotate almeno unavolta? 
+SELECT *
+FROM `prenotazioni` 
+JOIN pagamenti
+ON prenotazioni.id = pagamenti.prenotazione_id 
+WHERE prenotazione_id = 7
+
+●Le stanze sono state tutte prenotate almeno una volta? 
 (Visualizzare le stanze non ancora prenotate)
+
+
